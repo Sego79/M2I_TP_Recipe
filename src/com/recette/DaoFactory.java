@@ -11,4 +11,7 @@ public class DaoFactory {
     public static CrudDaoIngredient<Ingredient> getIngredientDao() {
         return new IngredientJdbcDao();
     }
+    public static CrudDaoContenir<Contenir> getContenirDao() {
+        return new ContenirJdbcDao();
+    }
 }

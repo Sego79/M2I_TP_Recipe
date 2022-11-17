@@ -2,6 +2,7 @@ package com.recette;
 
 public class Ingredient {
 
+    private int idIngredient;
     private String nameIngredient;
     private int qty;
     private String measureQty;
@@ -15,13 +16,14 @@ public class Ingredient {
                 '}';
     }
 
+
     public Ingredient() {
         this.setNameIngredient(nameIngredient);
         this.setQty(qty);
         this.setMeasureQty(measureQty);
     }
 
-    public Ingredient(String nameIngredient, int qty, String measureQty) {
+    public Ingredient( String nameIngredient, int qty, String measureQty) {
         this.setNameIngredient(nameIngredient);
         this.setQty(qty);
         this.setMeasureQty(measureQty);
@@ -49,5 +51,13 @@ public class Ingredient {
 
     public void setMeasureQty(String measureQty) {
         this.measureQty = measureQty;
+    }
+
+    public int getIdIngredient() {
+        return idIngredient;
+    }
+
+    public void setIdIngredient(int idIngredient) {
+        this.idIngredient = idIngredient;
     }
 }

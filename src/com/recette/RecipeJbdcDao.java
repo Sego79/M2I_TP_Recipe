@@ -9,19 +9,17 @@ public class RecipeJbdcDao implements CrudDao<Recipe>{
 
     private LocalDate DateSelection;
 
-
-    // Methodes pour les recettes
-
+    @Override
     public Recipe findRecetteByName(String nameRecipe) {
         Recipe recipeByName = new Recipe();
-        String queryFindRecetteByName = "SELECT idRecipe, context, theme, opinion, nameRecipe, descriptionRecipe, duration, nbPeople, idUser FROM recipe WHERE nameRecipe=?";
+        String queryFindRecetteByName = "SELECT * FROM recipe WHERE nameRecipe=?";
         Connection connection = ConnectionManager.getConnectionInstance();
 
         try(PreparedStatement prepareStatement = connection.prepareStatement(queryFindRecetteByName)) {
             prepareStatement.setString(1,nameRecipe);
             ResultSet rs = prepareStatement.executeQuery();
-            while (rs.next()) {
-                recipeByName =  mapToRecipeWithoutDate(rs);
+            while (rs.next()){
+                recipeByName =  mapToRecipe(rs);
             }
        } catch (SQLException ex) {
             ex.printStackTrace();
@@ -30,23 +28,24 @@ public class RecipeJbdcDao implements CrudDao<Recipe>{
         return recipeByName;
     }
 
-//    public List<Recipe> findAllName() {
-//        List<Recipe> listRecipe = new ArrayList();
-//        String queryFindAll = "SELECT nameRecipe FROM recipe";
-//        Connection connection = ConnectionManager.getConnectionInstance();
-//
-//        try(Statement statement = connection.createStatement()) {
-//            ResultSet rs = statement.executeQuery(queryFindAll);
-//            while (rs.next() == true) {
-//                listRecipe.add(mapToRecipe(rs));
-//            }
-//            listRecipe.forEach(element-> System.out.println(element.toString()));
-//        } catch (SQLException ex) {
-//            ex.printStackTrace();
-//        }
-//        return listRecipe;
-//    }
+    @Override
+    public int findRecetteById(Recipe recipe) {
+        int idRecipe = 0;
+        String queryFindRecetteById = "SELECT idRecipe FROM recipe WHERE nameRecipe=?";
+        Connection connection = ConnectionManager.getConnectionInstance();
 
+        try(PreparedStatement prepareStatement = connection.prepareStatement(queryFindRecetteById)) {
+            prepareStatement.setString(1, recipe.getNameRecipe());
+            ResultSet rs = prepareStatement.executeQuery();
+            while (rs.next()){
+                idRecipe = rs.getInt("idRecipe");
+
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return idRecipe;
+    }
     @Override
     public List<Integer> findIdIngredientFromRecipe(Recipe recipe) {
         List<Integer> listFindIdIngredientFromRecipe = new ArrayList();
@@ -94,7 +93,7 @@ public class RecipeJbdcDao implements CrudDao<Recipe>{
 
     public List<Recipe> findRecipePlus6Days() throws SQLException {
         List<Recipe> listRecipePlus6Days = new ArrayList();
-        String queryFindRecipePlus6Days = "SELECT * FROM recipe WHERE dateRecipe>?";
+        String queryFindRecipePlus6Days = "SELECT * FROM recipe WHERE dateRecipe<?";
 
         Connection connection = ConnectionManager.getConnectionInstance();
 
@@ -211,7 +210,6 @@ public class RecipeJbdcDao implements CrudDao<Recipe>{
     private Recipe mapToRecipe(ResultSet rs) throws SQLException {
         Date date = rs.getDate("dateRecipe");
         LocalDate dateRecipe = date != null ? date.toLocalDate() : null;
-
         Recipe recipe = new Recipe(
                 rs.getInt("idRecipe"),
                 rs.getString("context"),
@@ -227,7 +225,6 @@ public class RecipeJbdcDao implements CrudDao<Recipe>{
     }
 
     private Recipe mapToRecipeWithoutDate(ResultSet rs) throws SQLException {
-
         Recipe recipe = new Recipe(
                 rs.getInt("idRecipe"),
                 rs.getString("context"),

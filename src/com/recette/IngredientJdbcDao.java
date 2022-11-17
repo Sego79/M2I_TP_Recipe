@@ -8,54 +8,58 @@ public class IngredientJdbcDao implements CrudDaoIngredient<Ingredient>{
 
     private static List<Integer> idIngredientFromRecipee;
 
-
-
     @Override
-    public List<Ingredient> SelectIngredientByRecipe() throws SQLException {
-        List<Ingredient> listIngredient = new ArrayList();
-        String querySelectIngredientByRecipe = """       
-                SELECT *\s
-                FROM ingredients\s
-                WHERE ingredients.idIngredients = ?;""";
+    public int findIngredientById(Ingredient ingredient) {
+        int idIngredient = 0;
+        String queryFindIngredientById = "SELECT ingredients.idIngredients FROM ingredients WHERE nameIngredient=?;";
         Connection connection = ConnectionManager.getConnectionInstance();
 
-        for (int i = 0; i <= idIngredientFromRecipee.size()-1; i++) {
-            try (PreparedStatement st = connection.prepareStatement(querySelectIngredientByRecipe)) {
-                st.setInt(1, getIdIngredientFromRecipe().get(i));
+        try(PreparedStatement prepareStatement = connection.prepareStatement(queryFindIngredientById)) {
+            prepareStatement.setString(1, ingredient.getNameIngredient());
+            ResultSet rs = prepareStatement.executeQuery();
+            while (rs.next()){
+                idIngredient = rs.getInt("idIngredients");
 
-                ResultSet rs = st.executeQuery();
-                while (rs.next()) {
-                    listIngredient.add(mapToIngredient(rs));
-                }
-
-                //connection.commit();
-            } catch (SQLException e) {
-                //connection.rollback();
-                e.printStackTrace();
             }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
-        listIngredient.forEach((element -> System.out.println(element)));
-        return listIngredient;
+        return idIngredient;
     }
+    @Override
+    public List<Ingredient> findIngredientFromRecipe(Recipe recipe) {
+        List<Ingredient> listFindIngredientFromRecipe = new ArrayList();
+        String queryfindIngredientFromRecipe = "" +
+                "SELECT nameIngredient, quantity, measureUnity " +
+                "FROM recipe " +
+                "INNER JOIN contenir " +
+                "ON contenir.idRecipe = recipe.idRecipe " +
+                "INNER JOIN ingredients " +
+                "ON contenir.idIngredients = ingredients.idIngredients " +
+                "WHERE contenir.idRecipe = ?";
 
-//    @Override
-//    public List<Ingredient> findAll() {
-//        List<Ingredient> listIngredient = new ArrayList();
-//        String queryFindAll = "SELECT * FROM ingredients";
-////        Connection connection = ConnectionManager.getConnectionInstance();
-//
-//        try(Statement statement = connection.createStatement()) {
-//            ResultSet rs = statement.executeQuery(queryFindAll);
-//            while (rs.next() == true) {
-//                listIngredient.add(mapToIngredient(rs));
-//            }
-//            listIngredient.forEach(element-> System.out.println(element.toString()));
-//        } catch (SQLException ex) {
-//            ex.printStackTrace();
-//        }
-//        return listIngredient;
-//    }
-
+        Connection connection = ConnectionManager.getConnectionInstance();
+        try (PreparedStatement st = connection.prepareStatement(queryfindIngredientFromRecipe)) {
+            st.setInt(1, recipe.getIdRecipe());
+            ResultSet rs = st.executeQuery();
+            while (rs.next() == true) {
+                Ingredient ingredient = new Ingredient(
+                        rs.getString("nameIngredient"),
+                        rs.getInt("quantity"),
+                        rs.getString("measureUnity"));
+               listFindIngredientFromRecipe.add(ingredient);
+            }
+        } catch (SQLException e) {
+            System.out.println("Probleme selection ingredient");
+            throw new RuntimeException(e);
+        }
+        listFindIngredientFromRecipe.forEach(element -> System.out.println(element));
+        return listFindIngredientFromRecipe;
+    }
+    @Override
+    public List<Ingredient> SelectIngredientByRecipe() throws SQLException {
+        return null;
+    }
     @Override
     public void delete(String nameIngredient) throws SQLException {
         String queryDeleteIngredient = "DELETE FROM ingredients WHERE nameIngredient=?";

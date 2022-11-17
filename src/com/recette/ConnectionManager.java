@@ -3,7 +3,6 @@ package com.recette;
 import java.sql.*;
 
 public class ConnectionManager {
-
     private static Connection CONNECTION_INSTANCE;
 
     private final static String URL = "jdbc:mysql://localhost:3306/recipesegolebaptiste?serverTimezone=UTC";

@@ -5,13 +5,14 @@ import java.util.List;
 
 public interface CrudDaoIngredient<T> {
 
+    int findIngredientById(T element);
     List<T> SelectIngredientByRecipe() throws SQLException;
-
-    //List<T> findAll();
 
     void delete(String nameRecipe) throws SQLException;
 
     T update(Ingredient ingredient) throws SQLException;
 
     T create(Ingredient element) throws SQLException;
+
+    List<T> findIngredientFromRecipe(Recipe recipe);
 }

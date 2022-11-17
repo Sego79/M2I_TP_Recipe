@@ -16,10 +16,8 @@ public class Recipe{
     private int nbPeople;
     private int idUser;
 
-
     public Recipe() {
     }
-
     public Recipe(int idRecipe, String context, String theme, int opinion, String nameRecipe, String descriptionRecipe, int duration, int nbPeople, int idUser) {
         this.idRecipe = idRecipe;
         this.context = context;
@@ -31,8 +29,8 @@ public class Recipe{
         this.nbPeople = nbPeople;
         this.idUser = idUser;
     }
+    public Recipe( String context, String theme, int opinion, String nameRecipe, String descriptionRecipe, int duration, int nbPeople, int idUser) {
 
-    public Recipe(String context, String theme, int opinion, String nameRecipe, String descriptionRecipe, int duration, int nbPeople, int idUser) {
         this.context = context;
         this.theme = theme;
         this.opinion = opinion;
@@ -41,6 +39,8 @@ public class Recipe{
         this.duration = duration;
         this.nbPeople = nbPeople;
         this.idUser = idUser;
+
+
 
     }
     public Recipe(int idRecipe, String context, String theme, int opinion, String nameRecipe, LocalDate dateRecipe, String descriptionRecipe, int duration, int nbPeople, int idUser) {
@@ -55,23 +55,17 @@ public class Recipe{
         this.nbPeople = nbPeople;
         this.idUser = idUser;
     }
-
-//    public Recipe(int idRecipe, String nameRecipe, String descriptionRecipe, int idUser) {
-//        this.idRecipe = idRecipe;
-//        this.nameRecipe = nameRecipe;
-//        this.descriptionRecipe = descriptionRecipe;
-//        this.idUser = idUser;
-   // }
-
-//    public Recipe(String theme) {
-//        this.theme = theme;
-//        this.idRecipe = idRecipe;
-//        this.nameRecipe = nameRecipe;
-//        this.descriptionRecipe = descriptionRecipe;
-//        this.idUser = idUser;
-//
-//    }
-
+    public Recipe(String context, String theme, int opinion, String nameRecipe, LocalDate dateRecipe, String descriptionRecipe, int duration, int nbPeople, int idUser) {
+        this.context = context;
+        this.theme = theme;
+        this.opinion = opinion;
+        this.nameRecipe = nameRecipe;
+        this.descriptionRecipe = descriptionRecipe;
+        this.dateRecipe = dateRecipe;
+        this.duration = duration;
+        this.nbPeople = nbPeople;
+        this.idUser = idUser;
+    }
 
     @Override
     public String toString() {

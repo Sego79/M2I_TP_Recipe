@@ -5,6 +5,7 @@ import java.util.List;
 
 public interface CrudDao<E> {
 
+    int findRecetteById(E element);
     List<Integer> findIdIngredientFromRecipe(Recipe recipeName);
     List<E> findAll();
 
@@ -19,4 +20,6 @@ public interface CrudDao<E> {
     E create(E element) throws SQLException;
 
     E findRecetteByName(String nomRecette);
+
+
 }

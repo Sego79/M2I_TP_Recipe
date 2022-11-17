@@ -2,27 +2,35 @@ package com.recette;
 
 public class Contenir {
 
-    private Ingredient ingredient;
-    private Recipe recipe;
+    private int idIngredient;
+    private int idRecipe;
 
-    public Contenir(Ingredient ingredient,  Recipe recipe) {
-        this.ingredient = ingredient;
-        this.recipe = recipe;
+    public Contenir(int idIngredient, int idRecipe) {
+        this.setIdIngredient(idIngredient);
+        this.setIdRecipe(idRecipe);
     }
 
-    public Ingredient getIngredient() {
-        return ingredient;
+    public int getIdIngredient() {
+        return idIngredient;
     }
 
-    public void setIngredient(Ingredient ingredient) {
-        this.ingredient = ingredient;
+    public void setIdIngredient(int idIngredient) {
+        this.idIngredient = idIngredient;
     }
 
-    public Recipe getRecipe() {
-        return recipe;
+    public int getIdRecipe() {
+        return idRecipe;
     }
 
-    public void setRecipe(Recipe recipe) {
-        this.recipe = recipe;
+    public void setIdRecipe(int idRecipe) {
+        this.idRecipe = idRecipe;
+    }
+
+    @Override
+    public String toString() {
+        return "Contenir{" +
+                "idIngredient=" + idIngredient +
+                ", idRecipe=" + idRecipe +
+                '}';
     }
 }
